@@ -2,7 +2,11 @@ package main
 
 import "fmt"
 
-func main() {
+func printOS() {
 	osName := GetOS()
-	fmt.Println("Hello I'm in", osName)
+	fmt.Println("Hello I'm running on", osName)
+}
+
+func main() {
+	printOS()
 }
