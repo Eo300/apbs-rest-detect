@@ -1,4 +1,4 @@
-name: Build Detection Go Script
+name: Build Detection Script
 on: 
   push:
     paths:
@@ -39,7 +39,7 @@ jobs:
       if: matrix.os != 'windows-latest'
 
     - name: Check Windows Build
-      if: matrix.os == windows-latest
+      if: matrix.os == 'windows-latest'
       run: detect.exe > tmp.txt
         SET /P output=<tmp.txt
 
@@ -53,7 +53,7 @@ jobs:
         )
       
     - name: Check Linux Build
-      if: matrix.os == ubuntu-latest
+      if: matrix.os == 'ubuntu-latest'
       run: |
         if [ "$(./detect)" = "Hello I'm running on macOS" ]; then
             exit 0
@@ -62,7 +62,7 @@ jobs:
         fi
 
     - name: Check macOS Build
-      if: matrix.os == macOS-latest
+      if: matrix.os == 'macOS-latest'
       run: |
         if [ "$(./detect)" = "Hello I'm running on macOS" ]; then
             exit 0
