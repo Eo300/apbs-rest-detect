@@ -8,5 +8,6 @@ func printOS() {
 }
 
 func main() {
+	// Print the current os based on the build
 	printOS()
 }
