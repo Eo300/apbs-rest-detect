@@ -1,7 +1,10 @@
 name: Go
-on: [push]
-jobs:
+on: 
+  push:
+    paths:
+      - "src/*"
 
+jobs:
   build:
     name: Build
     runs-on: ${{ matrix.os }}
