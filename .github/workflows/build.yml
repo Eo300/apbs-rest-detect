@@ -1,6 +1,9 @@
 name: Build All Platforms
 on: 
-  [push]
+  [push]:
+    paths:
+      - '.github/workflows/*'
+      - 'src/*'
 
 jobs:
   build:
