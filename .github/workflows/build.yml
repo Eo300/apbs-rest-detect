@@ -1,8 +1,6 @@
 name: Build Detection Script
 on: 
-  push:
-    paths:
-      - "src/*"
+  [push]
 
 jobs:
   build:
