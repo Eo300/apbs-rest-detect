@@ -54,7 +54,7 @@ jobs:
     - name: Check Linux Build
       if: matrix.os == 'ubuntu-latest'
       run: |
-        if [ "$(./bin/detect)" = "Hello I'm running on macOS" ]; then
+        if [ "$(./bin/detect)" = "Hello I'm running on Linux" ]; then
             exit 0
         else
             exit 1
