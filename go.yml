@@ -1,5 +1,5 @@
 name: Go
-on: push
+on: [push]
 jobs:
 
   build:
@@ -35,19 +35,19 @@ jobs:
       run: go build -v -o bin/detect src/
       if: matrix.os != 'windows-latest'
 
-    - name: Check Windows Build
-      if: matrix.os == windows-latest
-      run: detect.exe > tmp.txt
-        SET /P output=<tmp.txt
+    # - name: Check Windows Build
+    #   if: matrix.os == windows-latest
+    #   run: detect.exe > tmp.txt
+    #     SET /P output=<tmp.txt
 
-        if "%output%"=="Hello I'm runnig on Windows" (
-            del /f tmp.txt
-            exit 0
-        )
-        else (
-            del /f tmp.txt
-            exit 1
-        )
+    #     if "%output%"=="Hello I'm runnig on Windows" (
+    #         del /f tmp.txt
+    #         exit 0
+    #     )
+    #     else (
+    #         del /f tmp.txt
+    #         exit 1
+    #     )
       
     - name: Check Linux Build
       if: matrix.os == ubuntu-latest
