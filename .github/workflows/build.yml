@@ -30,11 +30,11 @@ jobs:
         fi
 
     - name: Build Windows
-      run: go build -v -o bin/detect.exe src/
+      run: go build -v -o bin/detect.exe ./src/
       if: matrix.os == 'windows-latest'
 
     - name: Build Unix
-      run: go build -v -o bin/detect src/
+      run: go build -v -o bin/detect ./src/
       if: matrix.os != 'windows-latest'
 
     - name: Check Windows Build
