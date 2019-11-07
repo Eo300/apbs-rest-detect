@@ -2,6 +2,7 @@
 
 package main
 
+// GetOS : returns name of operating system
 func GetOS() string {
 	return "Windows"
 }
