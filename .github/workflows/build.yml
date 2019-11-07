@@ -21,7 +21,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Get dependencies
-      if: matrix.os != 'windows-latest'
+      shell: bash
       run: |
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
@@ -39,17 +39,13 @@ jobs:
 
     - name: Check Windows Build
       if: matrix.os == 'windows-latest'
-      run: detect.exe > tmp.txt
-        SET /P output=<tmp.txt
-
-        if "%output%"=="Hello I'm runnig on Windows" (
-            del /f tmp.txt
+      shell: bash
+      run: |
+        if [ "$(./bin/detect)" = "Hello I'm running on Windows" ]; then
             exit 0
-        )
-        else (
-            del /f tmp.txt
+        else
             exit 1
-        )
+        fi
       
     - name: Check Linux Build
       if: matrix.os == 'ubuntu-latest'
