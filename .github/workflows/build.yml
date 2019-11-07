@@ -1,4 +1,4 @@
-name: Build Detection Script
+name: Build All Platforms
 on: 
   [push]
 
