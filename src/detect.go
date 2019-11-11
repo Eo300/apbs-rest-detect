@@ -12,8 +12,8 @@ func printOS() {
 
 func run() int {
 	// Print the current os based on the build
-	printOS()
 	osName := GetOS()
+	fmt.Println("Target:", osName)
 
 	// Does the user's CPU support virtualization
 	if !HasVirtHardware() {

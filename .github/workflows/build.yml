@@ -47,28 +47,12 @@ jobs:
     - name: Check Windows Build
       if: matrix.os == 'windows-latest'
       shell: bash
-      run: |
-        if [ "$(./bin/detect)" = "Hello I'm running on Windows" ]; then
-            exit 0
-        else
-            exit 1
-        fi
+      run: ../tests/misc/verify_os.sh ./bin/detect.exe Windows
       
     - name: Check Linux Build
       if: matrix.os == 'ubuntu-latest'
-      run: |
-        if [ "$(./bin/detect)" = "Hello I'm running on Linux" ]; then
-            exit 0
-        else
-            exit 1
-        fi
+      run: ../tests/misc/verify_os.sh ./bin/detect Linux
 
     - name: Check macOS Build
       if: matrix.os == 'macOS-latest'
-      run: |
-        if [ "$(./bin/detect)" = "Hello I'm running on macOS" ]; then
-            exit 0
-        else
-            exit 1
-        fi
-      
+      run: ../tests/misc/verify_os.sh ./bin/detect macOS
