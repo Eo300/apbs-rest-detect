@@ -35,24 +35,26 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
-
-    - name: Build Windows
+    
+    # Build the executables/binaries for the respective OS
+    - name: Build the Windows executable
       run: go build -v -o bin/detect.exe ./src/
       if: matrix.os == 'windows-latest'
 
-    - name: Build Unix
+    - name: Build the Unix binary
       run: go build -v -o bin/detect ./src/
       if: matrix.os != 'windows-latest'
 
+    # Run verification script for binaries to confirm operating system
     - name: Check Windows Build
       if: matrix.os == 'windows-latest'
       shell: bash
-      run: ../tests/misc/verify_os.sh ./bin/detect.exe Windows
+      run: bash ../tests/misc/verify_os.sh ./bin/detect.exe Windows
       
     - name: Check Linux Build
       if: matrix.os == 'ubuntu-latest'
-      run: ../tests/misc/verify_os.sh ./bin/detect Linux
+      run: bash ../tests/misc/verify_os.sh ./bin/detect Linux
 
     - name: Check macOS Build
       if: matrix.os == 'macOS-latest'
-      run: ../tests/misc/verify_os.sh ./bin/detect macOS
+      run: bash ../tests/misc/verify_os.sh ./bin/detect macOS
