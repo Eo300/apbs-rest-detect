@@ -49,12 +49,12 @@ jobs:
     - name: Check Windows Build
       if: matrix.os == 'windows-latest'
       shell: bash
-      run: bash ../tests/misc/verify_os.sh ./bin/detect.exe Windows
+      run: ./tests/misc/verify_os.sh ./bin/detect.exe Windows
       
     - name: Check Linux Build
       if: matrix.os == 'ubuntu-latest'
-      run: bash ../tests/misc/verify_os.sh ./bin/detect Linux
+      run: ./tests/misc/verify_os.sh ./bin/detect Linux
 
     - name: Check macOS Build
       if: matrix.os == 'macOS-latest'
-      run: bash ../tests/misc/verify_os.sh ./bin/detect macOS
+      run: ./tests/misc/verify_os.sh ./bin/detect macOS
