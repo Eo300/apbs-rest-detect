@@ -53,7 +53,7 @@ func HasVirtHardware() bool {
 	return true
 }
 
-// HasKVM : checks if KVM is install and is found in PATH
+// HasKVM : checks if KVM is installed and is found in PATH
 func HasKVM() bool {
 	whichOut, err := Which("kvm")
 
@@ -125,8 +125,10 @@ func GetInstallRecommendations() string {
 		needed_software_list = append(needed_software_list, minikube_map)
 	}
 
-	// Print list of required software to the string variable 'output'
+	// Print the recommended prerequisite install path
 	output = fmt.Sprintf("%sRecommended Path:\n  %s\n\n", output, method_name)
+
+	// Print list of required software to the string variable 'output'
 	if len(required_software_list) > 0 {
 		output = fmt.Sprintf("%s%s", output, SprintRequired(required_software_list))
 	}
