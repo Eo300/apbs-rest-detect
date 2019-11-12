@@ -90,10 +90,10 @@ func GetInstallRecommendations() string {
 	// list of software name:link pairings
 	var method_name string
 	var required_software_list []string
-	var needed_software_list []map[string]string
-	var existing_software_list []map[string]string
-	minikube_map := map[string]string{"name": "Minikube", "url": "https://kubernetes.io/docs/tasks/tools/install-minikube/"}
-	virtualbox_map := map[string]string{"name": "VirtualBox", "url": "https://www.virtualbox.org/wiki/Downloads"}
+	var needed_software_list []stringMap
+	var existing_software_list []stringMap
+	minikube_map := stringMap{"name": "Minikube", "url": "https://kubernetes.io/docs/tasks/tools/install-minikube/"}
+	virtualbox_map := stringMap{"name": "VirtualBox", "url": "https://www.virtualbox.org/wiki/Downloads"}
 
 	if HasKVM() {
 		// recommend minikube via KVM
@@ -106,7 +106,7 @@ func GetInstallRecommendations() string {
 		required_software_list = append(required_software_list, "VirtualBox", "Minikube")
 
 		vbox_path, _ := Which("virtualbox")
-		vbox_path_map := map[string]string{"name": "Virtualbox", "path": vbox_path}
+		vbox_path_map := stringMap{"name": "Virtualbox", "path": vbox_path}
 		existing_software_list = append(existing_software_list, vbox_path_map)
 
 	} else {
@@ -119,42 +119,26 @@ func GetInstallRecommendations() string {
 	// check for minikube in PATH
 	if HasMinikube() {
 		minikube_path, _ := Which("minikube")
-		minikube_path_map := map[string]string{"name": "Minikube", "path": minikube_path}
+		minikube_path_map := stringMap{"name": "Minikube", "path": minikube_path}
 		existing_software_list = append(existing_software_list, minikube_path_map)
 	} else {
 		needed_software_list = append(needed_software_list, minikube_map)
 	}
 
+	// Print list of required software to the string variable 'output'
 	output = fmt.Sprintf("%sRecommended Path:\n  %s\n\n", output, method_name)
-
-	// Print list of required software
 	if len(required_software_list) > 0 {
-		output = fmt.Sprintf("%sRequired software:\n", output)
-		for _, name := range required_software_list {
-			output = fmt.Sprintf("%s  - %-10s\n", output, name)
-		}
-		output = fmt.Sprintf("%s\n", output)
+		output = fmt.Sprintf("%s%s", output, SprintRequired(required_software_list))
 	}
 
 	// Print list of existing software
 	if len(existing_software_list) > 0 {
-		output = fmt.Sprintf("%sInstalled software...\n", output)
-		for _, pathMap := range existing_software_list {
-			name := pathMap["name"]
-			path := pathMap["path"]
-			output = fmt.Sprintf("%s  - %-10s : %s\n", output, name, path)
-		}
-		output = fmt.Sprintf("%s\n", output)
+		output = fmt.Sprintf("%s%s", output, SprintInstalled(existing_software_list))
 	}
 
 	// Print list of software needed by user
 	if len(needed_software_list) > 0 {
-		output = fmt.Sprintf("%sNeeded software...\n", output)
-		for _, swMap := range needed_software_list {
-			name := swMap["name"]
-			url := swMap["url"]
-			output = fmt.Sprintf("%s  - %-10s - get from %s\n", output, name, url)
-		}
+		output = fmt.Sprintf("%s%s", output, SprintNeeded(needed_software_list))
 	} else {
 		output = fmt.Sprintf("%sNice, you have all the prequisite software! You're good to go install APBS-REST.", output)
 	}
