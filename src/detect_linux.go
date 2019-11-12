@@ -73,26 +73,38 @@ func HasVirtualbox() bool {
 	return true
 }
 
+// HasMinikube : checks if Minikube is installed and is found in PATH
+func HasMinikube() bool {
+	whichOut, err := Which("minikube")
+
+	if len(whichOut) == 0 && err != nil {
+		return false
+	}
+	return true
+}
+
 // GetInstallRecommendations : check installed software and build recommended install path for user
 func GetInstallRecommendations() string {
 	var output string
 
 	// list of software name:link pairings
 	var method_name string
-	var software_list []map[string]string
+	var required_software_list []string
+	var needed_software_list []map[string]string
 	var existing_software_list []map[string]string
 	minikube_map := map[string]string{"name": "Minikube", "url": "https://kubernetes.io/docs/tasks/tools/install-minikube/"}
-	virtualbox_map := map[string]string{"name": "Virtualbox", "url": "https://www.virtualbox.org/wiki/Downloads"}
+	virtualbox_map := map[string]string{"name": "VirtualBox", "url": "https://www.virtualbox.org/wiki/Downloads"}
 
 	if HasKVM() {
 		// recommend minikube via KVM
-		method_name = "Minikube via KVM"
-		software_list = append(software_list, minikube_map)
+		method_name = "Minikube (via KVM)"
+		required_software_list = append(required_software_list, "KVM", "Minikube")
 
 	} else if HasVirtualbox() {
 		// recommend Minikube via Virtualbox
-		method_name = "Minikube via Virtualbox"
-		software_list = append(software_list, minikube_map)
+		method_name = "Minikube (via VirtualBox)"
+		required_software_list = append(required_software_list, "VirtualBox", "Minikube")
+		// needed_software_list = append(needed_software_list, minikube_map)
 
 		vbox_path, _ := Which("virtualbox")
 		vbox_path_map := map[string]string{"name": "Virtualbox", "path": vbox_path}
@@ -100,37 +112,53 @@ func GetInstallRecommendations() string {
 
 	} else {
 		// recommend Minikube via Virtualbox
-		method_name = "Minikube via Virtualbox"
-		software_list = append(software_list, minikube_map)
-		software_list = append(software_list, virtualbox_map)
+		method_name = "Minikube (via VirtualBox)"
+		required_software_list = append(required_software_list, "VirtualBox", "Minikube")
+		// needed_software_list = append(needed_software_list, minikube_map)
+		needed_software_list = append(needed_software_list, virtualbox_map)
 	}
 
 	// check for minikube in PATH
-	minikube_path, err := Which("minikube")
-	if len(minikube_path) > 0 && err == nil {
+	if HasMinikube(){
+		minikube_path, _ := Which("minikube")
 		minikube_path_map := map[string]string{"name": "Minikube", "path": minikube_path}
 		existing_software_list = append(existing_software_list, minikube_path_map)
+	} else{
+		needed_software_list = append(needed_software_list, minikube_map)
 	}
 
 	output = fmt.Sprintf("%sRecommended Path:\n  %s\n\n", output, method_name)
 
+	// Print list of required software
+	if len(required_software_list) > 0 {
+		output = fmt.Sprintf("%sRequired software:\n", output)
+		for _, name := range required_software_list {
+			output = fmt.Sprintf("%s  - %-10s\n", output, name)
+		}
+		output = fmt.Sprintf("%s\n", output)
+	}
+	
 	// Print list of existing software
 	if len(existing_software_list) > 0 {
 		output = fmt.Sprintf("%sInstalled software...\n", output)
 		for _, pathMap := range existing_software_list {
 			name := pathMap["name"]
 			path := pathMap["path"]
-			output = fmt.Sprintf("%s  %-10s : %s\n", output, name, path)
+			output = fmt.Sprintf("%s  - %-10s : %s\n", output, name, path)
 		}
 		output = fmt.Sprintf("%s\n", output)
 	}
 
 	// Print list of software needed by user
-	output = fmt.Sprintf("%sNeeded software...\n", output)
-	for _, swMap := range software_list {
-		name := swMap["name"]
-		url := swMap["url"]
-		output = fmt.Sprintf("%s  %-10s - get from %s\n", output, name, url)
+	if len(needed_software_list) > 0 {
+		output = fmt.Sprintf("%sNeeded software...\n", output)
+		for _, swMap := range needed_software_list {
+			name := swMap["name"]
+			url := swMap["url"]
+			output = fmt.Sprintf("%s  - %-10s - get from %s\n", output, name, url)
+		}
+	} else{
+		output = fmt.Sprintf("%sNice, you have all the prequisite software! You're good to go install APBS-REST.", output)
 	}
 
 	return output
