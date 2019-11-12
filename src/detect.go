@@ -18,7 +18,7 @@ func run() int {
 	// Does the user's CPU support virtualization
 	if !HasVirtHardware() {
 		fmt.Fprintln(os.Stderr, "Unfortunately, your CPU does not support virtualization.")
-		// return 1
+		return 1
 	}
 
 	var recommendation string
