@@ -13,7 +13,7 @@ func printOS() {
 func run() int {
 	// Print the current os based on the build
 	osName := GetOS()
-	fmt.Println("Target:", osName)
+	fmt.Printf("Target: %s\n\n", osName)
 
 	// Does the user's CPU support virtualization
 	if !HasVirtHardware() {
@@ -34,7 +34,7 @@ func run() int {
 	}
 
 	// Print final recommendation to stdout
-	fmt.Println("Based on installations present on your system, we recommend the following software for satisfying the prerequisites of installing APBS-REST:")
+	// fmt.Println("Based on installations present on your system, we recommend the following software for satisfying the prerequisites of installing APBS-REST:")
 	fmt.Println(recommendation)
 	return 0
 }
