@@ -25,7 +25,8 @@ func Which(shellCommand string) (string, error) {
 	cmdObj := exec.Command("which", shellCommand)
 	stdOutput, err := cmdObj.Output()
 
-	return string(stdOutput), err
+	returnStr := strings.TrimSpace(string(stdOutput))
+	return returnStr, err
 }
 
 // HasVirtHardware : checks that CPU supports Intel VT-x or AMD SVM virtualization
@@ -92,7 +93,7 @@ func GetInstallRecommendations() string {
 		// recommend Minikube via Virtualbox
 		method_name = "Minikube via Virtualbox"
 		software_list = append(software_list, minikube_map)
-		
+
 		vbox_path, _ := Which("virtualbox")
 		vbox_path_map := map[string]string{"name": "Virtualbox", "path": vbox_path}
 		existing_software_list = append(existing_software_list, vbox_path_map)
@@ -106,13 +107,13 @@ func GetInstallRecommendations() string {
 
 	// check for minikube in PATH
 	minikube_path, err := Which("minikube")
-	if len(minikube_path) > 0 && err == nil{
+	if len(minikube_path) > 0 && err == nil {
 		minikube_path_map := map[string]string{"name": "Minikube", "path": minikube_path}
 		existing_software_list = append(existing_software_list, minikube_path_map)
 	}
 
 	output = fmt.Sprintf("%sRecommended Path:\n  %s\n\n", output, method_name)
-	
+
 	// Print list of existing software
 	if len(existing_software_list) > 0 {
 		output = fmt.Sprintf("%sInstalled software...\n", output)
@@ -121,9 +122,9 @@ func GetInstallRecommendations() string {
 			path := pathMap["path"]
 			output = fmt.Sprintf("%s  %-10s : %s\n", output, name, path)
 		}
-		fmt.Println()
+		output = fmt.Sprintf("%s\n", output)
 	}
-	
+
 	// Print list of software needed by user
 	output = fmt.Sprintf("%sNeeded software...\n", output)
 	for _, swMap := range software_list {
