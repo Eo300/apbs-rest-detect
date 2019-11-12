@@ -92,34 +92,44 @@ func GetInstallRecommendations() string {
 		// recommend Minikube via Virtualbox
 		method_name = "Minikube via Virtualbox"
 		software_list = append(software_list, minikube_map)
-
+		
 		vbox_path, _ := Which("virtualbox")
-		vbox_path_map := map[string]string{"name": "Virtualbox", "url": vbox_path}
+		vbox_path_map := map[string]string{"name": "Virtualbox", "path": vbox_path}
 		existing_software_list = append(existing_software_list, vbox_path_map)
 
 	} else {
+		// recommend Minikube via Virtualbox
 		method_name = "Minikube via Virtualbox"
 		software_list = append(software_list, minikube_map)
 		software_list = append(software_list, virtualbox_map)
 	}
 
-	output = fmt.Sprintf("%sRecommended Path:\n  %s\n\n", output, method_name)
+	// check for minikube in PATH
+	minikube_path, err := Which("minikube")
+	if len(minikube_path) > 0 && err == nil{
+		minikube_path_map := map[string]string{"name": "Minikube", "path": minikube_path}
+		existing_software_list = append(existing_software_list, minikube_path_map)
+	}
 
+	output = fmt.Sprintf("%sRecommended Path:\n  %s\n\n", output, method_name)
+	
+	// Print list of existing software
 	if len(existing_software_list) > 0 {
 		output = fmt.Sprintf("%sInstalled software...\n", output)
 		for _, pathMap := range existing_software_list {
 			name := pathMap["name"]
 			path := pathMap["path"]
-			output = fmt.Sprintf("%s  %-11s : %s\n", output, name, path)
+			output = fmt.Sprintf("%s  %-10s : %s\n", output, name, path)
 		}
 		fmt.Println()
 	}
-
+	
+	// Print list of software needed by user
 	output = fmt.Sprintf("%sNeeded software...\n", output)
 	for _, swMap := range software_list {
 		name := swMap["name"]
 		url := swMap["url"]
-		output = fmt.Sprintf("%s  %-11s - get from %s\n", output, name, url)
+		output = fmt.Sprintf("%s  %-10s - get from %s\n", output, name, url)
 	}
 
 	return output
