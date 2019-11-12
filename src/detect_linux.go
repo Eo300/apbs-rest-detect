@@ -104,7 +104,6 @@ func GetInstallRecommendations() string {
 		// recommend Minikube via Virtualbox
 		method_name = "Minikube (via VirtualBox)"
 		required_software_list = append(required_software_list, "VirtualBox", "Minikube")
-		// needed_software_list = append(needed_software_list, minikube_map)
 
 		vbox_path, _ := Which("virtualbox")
 		vbox_path_map := map[string]string{"name": "Virtualbox", "path": vbox_path}
@@ -114,16 +113,15 @@ func GetInstallRecommendations() string {
 		// recommend Minikube via Virtualbox
 		method_name = "Minikube (via VirtualBox)"
 		required_software_list = append(required_software_list, "VirtualBox", "Minikube")
-		// needed_software_list = append(needed_software_list, minikube_map)
 		needed_software_list = append(needed_software_list, virtualbox_map)
 	}
 
 	// check for minikube in PATH
-	if HasMinikube(){
+	if HasMinikube() {
 		minikube_path, _ := Which("minikube")
 		minikube_path_map := map[string]string{"name": "Minikube", "path": minikube_path}
 		existing_software_list = append(existing_software_list, minikube_path_map)
-	} else{
+	} else {
 		needed_software_list = append(needed_software_list, minikube_map)
 	}
 
@@ -137,7 +135,7 @@ func GetInstallRecommendations() string {
 		}
 		output = fmt.Sprintf("%s\n", output)
 	}
-	
+
 	// Print list of existing software
 	if len(existing_software_list) > 0 {
 		output = fmt.Sprintf("%sInstalled software...\n", output)
@@ -157,14 +155,9 @@ func GetInstallRecommendations() string {
 			url := swMap["url"]
 			output = fmt.Sprintf("%s  - %-10s - get from %s\n", output, name, url)
 		}
-	} else{
+	} else {
 		output = fmt.Sprintf("%sNice, you have all the prequisite software! You're good to go install APBS-REST.", output)
 	}
 
 	return output
 }
-
-// func main() {
-// 	// fmt.Println("Hello I'm in Linux")
-// 	fmt.Println(HasVirtHardware())
-// }

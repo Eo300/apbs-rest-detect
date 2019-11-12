@@ -34,7 +34,6 @@ func run() int {
 	}
 
 	// Print final recommendation to stdout
-	// fmt.Println("Based on installations present on your system, we recommend the following software for satisfying the prerequisites of installing APBS-REST:")
 	fmt.Println(recommendation)
 	return 0
 }
