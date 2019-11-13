@@ -20,6 +20,7 @@ func GetOS() string {
 	return "Linux"
 }
 
+// Which : executes "which" shell command, returns output as string
 func Which(shellCommand string) (string, error) {
 	// println("executing: which", shellCommand)
 	cmdObj := exec.Command("which", shellCommand)
@@ -90,7 +91,7 @@ func GetInstallRecommendations() string {
 	// list of software name:link pairings
 	var method_name string
 	var required_software_list []string
-	var needed_software_list []stringMap
+	var missing_software_list []stringMap
 	var existing_software_list []stringMap
 	minikube_map := stringMap{"name": "Minikube", "url": "https://kubernetes.io/docs/tasks/tools/install-minikube/"}
 	virtualbox_map := stringMap{"name": "VirtualBox", "url": "https://www.virtualbox.org/wiki/Downloads"}
@@ -101,7 +102,7 @@ func GetInstallRecommendations() string {
 		required_software_list = append(required_software_list, "KVM", "Minikube")
 
 	} else if HasVirtualbox() {
-		// recommend Minikube via Virtualbox
+		// recommend Minikube via VirtualBox
 		method_name = "Minikube (via VirtualBox)"
 		required_software_list = append(required_software_list, "VirtualBox", "Minikube")
 
@@ -113,7 +114,7 @@ func GetInstallRecommendations() string {
 		// recommend Minikube via Virtualbox
 		method_name = "Minikube (via VirtualBox)"
 		required_software_list = append(required_software_list, "VirtualBox", "Minikube")
-		needed_software_list = append(needed_software_list, virtualbox_map)
+		missing_software_list = append(missing_software_list, virtualbox_map)
 	}
 
 	// check for minikube in PATH
@@ -122,7 +123,7 @@ func GetInstallRecommendations() string {
 		minikube_path_map := stringMap{"name": "Minikube", "path": minikube_path}
 		existing_software_list = append(existing_software_list, minikube_path_map)
 	} else {
-		needed_software_list = append(needed_software_list, minikube_map)
+		missing_software_list = append(missing_software_list, minikube_map)
 	}
 
 	// Print the recommended prerequisite install path
@@ -139,8 +140,8 @@ func GetInstallRecommendations() string {
 	}
 
 	// Print list of software needed by user
-	if len(needed_software_list) > 0 {
-		output = fmt.Sprintf("%s%s", output, SprintNeeded(needed_software_list))
+	if len(missing_software_list) > 0 {
+		output = fmt.Sprintf("%s%s", output, SprintNeeded(missing_software_list))
 	} else {
 		output = fmt.Sprintf("%sNice, you have all the prequisite software! You're good to go install APBS-REST.", output)
 	}
