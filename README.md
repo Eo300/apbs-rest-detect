@@ -16,7 +16,9 @@ Run the binary/executable for your respective system
 ./detect
 ```
 
-If using macOS/Linux, a you should see output with similar format to the following:
+You should see output with similar format to the following, respective to your system:
+
+### Linux
 ```shell
 $ ./detect.exe
 Target: Linux
@@ -33,7 +35,8 @@ Needed software...
   - Minikube   - get from https://kubernetes.io/docs/tasks/tools/install-minikube/
 ```
 
-If using Windows, the output is akin to Mac/Linux, with an additional line denoting your Windows edition:
+### Windows
+Note the additional line denoting Windows edition:
 ```shell
 $ ./detect.exe
 Target: Windows
@@ -50,6 +53,22 @@ Required software:
 Needed software...
   - Docker Desktop - get from https://docs.docker.com/docker-for-windows/install/
 ```
+
+### Mac
+```shell
+$ ./detect.exe
+Target: macOS
+
+Recommended Path:
+  Docker Desktop (w/ Kubernetes)
+
+Required software:
+  - Docker Desktop
+
+Needed software...
+  - Docker Desktop - get from https://docs.docker.com/docker-for-mac/install/
+```
+<br>
 
 If your CPU does not support virtualization for 64-bit systems, you should receive output such as the following:
 ```shell
