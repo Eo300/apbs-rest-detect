@@ -20,7 +20,7 @@ You should see output with similar format to the following, respective to your s
 
 ### Linux
 ```shell
-$ ./detect.exe
+$ ./detect
 Target: Linux
 
 Recommended Path:
@@ -56,7 +56,7 @@ Needed software...
 
 ### Mac
 ```shell
-$ ./detect.exe
+$ ./detect
 Target: macOS
 
 Recommended Path:
