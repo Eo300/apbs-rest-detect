@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+var systeminfo, _ = GetSystemInfo()
+
 // CheckErr : performs obligatory error check.
 func CheckErr(err error) {
 	if err != nil {
@@ -58,7 +60,17 @@ func GetWindowsEdition(systeminfo_text string) string {
 
 // HasVirtHardware : checks that CPU supports Intel VT-x or AMD SVM virtualization
 func HasVirtHardware() bool {
-	return true
+	// TODO: Do we return True if Hyper-V is turned on OR if virtualization if available
+	var systeminfoText string
+	systeminfoText = systeminfo
+	if strings.Contains(systeminfoText, "A hypervisor has been detected. Features required for Hyper-V will not be displayed.") {
+		return true
+	} else if strings.Contains(systeminfoText, "Virtualization Enabled In Firmware: Yes") {
+		return true
+	} else if strings.Contains(systeminfoText, "Hyper-V Requirements:") {
+		return true
+	}
+	return false
 }
 
 // HasDocker : checks if Docker is installed and is found in PATH
@@ -92,7 +104,7 @@ func HasMinikube() bool {
 // GetInstallRecommendations : check installed software and build recommended install path for user
 func GetInstallRecommendations() string {
 	var output string
-	var systeminfo string
+	// var systeminfo string
 	var windowsEdition string
 	var validEditions []string
 
@@ -105,7 +117,7 @@ func GetInstallRecommendations() string {
 	minikube_map := stringMap{"name": "Minikube", "url": "https://kubernetes.io/docs/tasks/tools/install-minikube/"}
 	virtualbox_map := stringMap{"name": "VirtualBox", "url": "https://www.virtualbox.org/wiki/Downloads"}
 
-	systeminfo, _ = GetSystemInfo()
+	// systeminfo, _ = GetSystemInfo()
 	windowsEdition = GetWindowsEdition(systeminfo)
 	validEditions = []string{"Pro", "Professional", "Enterprise", "Education"}
 	// validEditions = []string{"Pro", "Professional", "Education"}
