@@ -56,7 +56,7 @@ func HasVirtHardware() bool {
 
 // HasKVM : checks if KVM is installed and is found in PATH
 func HasKVM() bool {
-	whichOut, err := Which("kvm")
+	whichOut, err := Which("virsh")
 
 	if len(whichOut) == 0 && err != nil {
 		return false
