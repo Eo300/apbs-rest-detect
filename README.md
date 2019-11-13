@@ -35,7 +35,7 @@ Needed software...
 
 If using Windows, the output is akin to Mac/Linux, with an additional line denoting your Windows edition:
 ```shell
-> ./detect.exe
+$ ./detect.exe
 Target: Windows
 
 Recommended Path:
@@ -62,6 +62,6 @@ Unfortunately, your CPU does not support virtualization.
 ## Build
 To build from scratch, install the Go compiler, clone this repo, and from its top directory enter the following into your favorite shell:
 
-```shell
+```
 $ go build -o <binary_name> ./src/
 ```
