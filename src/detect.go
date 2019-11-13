@@ -46,6 +46,15 @@ func SprintNeeded(needed_software_list []stringMap) string {
 	return output
 }
 
+func InSliceString(list []string, value string) bool {
+	for _, element := range list {
+		if element == value {
+			return true
+		}
+	}
+	return false
+}
+
 func printOS() {
 	osName := GetOS()
 	fmt.Println("Hello I'm running on", osName)
